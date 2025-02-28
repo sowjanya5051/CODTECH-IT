@@ -1,0 +1,26 @@
+import requests
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+# Task 1: Fetch data from OpenWeatherMap API
+API_KEY = "410910abf6526aa029f6ae8b83e0d27c"  # Replace with your API key
+CITY = input("Enter your location")
+URL = f"http://api.openweathermap.org/data/2.5/weather?q={CITY}&appid={API_KEY}&units=metric"
+
+response = requests.get(URL)
+data = response.json()
+
+if response.status_code == 200:
+    temperature = data["main"]["temp"]
+    humidity = data["main"]["humidity"]
+    pressure = data["main"]["pressure"]
+    weather = data["weather"][0]["description"]
+    
+    # Visualization
+    plt.figure(figsize=(8, 5))
+    sns.barplot(x=["Temperature", "Humidity", "Pressure"], y=[temperature, humidity, pressure])
+    plt.title(f"Weather Data for {CITY} ({weather})")
+    plt.ylabel("Values")
+    plt.show()
+else:
+    print("Failed to retrieve data")
